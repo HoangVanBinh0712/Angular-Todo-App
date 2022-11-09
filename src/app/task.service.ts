@@ -10,46 +10,50 @@ import { List } from "./models/list.model";
 export class TaskService {
   constructor(private webReqService: WebRequestService) {}
 
-  getLists(){
-    return this.webReqService.get("lists/get_all");
+  getLists(userId:string){
+    return this.webReqService.get(`list/get_all/${userId}`);
   }
 
-  createList(title: string) {
+  createList(title: string, accountId: string) {
     // We want to send a web request to create a list
-    return this.webReqService.post("lists/create", { listName: title });
+    return this.webReqService.post("list/create", { listName: title,  accountId : accountId});
   }
 
   updateList(id: string, title: string) {
     // We want to send a web request to update a list
-    return this.webReqService.patch(`lists/${id}`, { title });
+    return this.webReqService.patch(`list/${id}`, { title });
+  }
+
+  updateListMinh(id: string, title: string) {
+    return this.webReqService.put(`list/update`, {id: id, listName: title });
   }
 
   updateTask(listId: string, taskId: string, title: string) {
     // We want to send a web request to update a list
-    return this.webReqService.patch(`lists/${listId}/tasks/${taskId}`, {
+    return this.webReqService.patch(`list/${listId}/tasks/${taskId}`, {
       title,
     });
   }
 
   deleteTask(listId: string, taskId: string) {
-    return this.webReqService.delete(`lists/${listId}/tasks/${taskId}`);
+    return this.webReqService.delete(`list/${listId}/tasks/${taskId}`);
   }
 
   deleteList(id: string) {
-    return this.webReqService.delete(`lists/${id}`);
+    return this.webReqService.delete(`list/${id}`);
   }
 
   getTasks(listId: string) {
-    return this.webReqService.get(`tasks/get_all/${listId}`);
+    return this.webReqService.get(`task/get_all/${listId}`);
   }
 
   createTask(title: string, listId: string) {
     // We want to send a web request to create a task
-    return this.webReqService.post(`lists/${listId}/tasks`, { title });
+    return this.webReqService.post(`list/${listId}/tasks`, { title });
   }
 
   complete(task: Task) {
-    return this.webReqService.patch(`lists/${task.list}/tasks/${task._id}`, {
+    return this.webReqService.patch(`list/${task.list}/tasks/${task._id}`, {
       completed: !task.isCompleted,
     });
   }

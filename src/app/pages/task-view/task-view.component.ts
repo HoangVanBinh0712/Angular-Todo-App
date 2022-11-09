@@ -3,6 +3,7 @@ import { TaskService } from "src/app/task.service";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Task } from "src/app/models/task.model";
 import { List } from "src/app/models/list.model";
+import { AuthService } from "src/app/auth.service";
 
 @Component({
   selector: "app-task-view",
@@ -12,30 +13,34 @@ import { List } from "src/app/models/list.model";
 export class TaskViewComponent implements OnInit {
   lists: List[];
   tasks: Task[];
+  accountId :string;
 
   selectedListId: string;
 
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.accountId = this.authService.getUserId();
+  }
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
+      this.taskService.getLists(this.accountId).subscribe((response: any) => {
+        this.lists = response.lists;
+      });
       if (params.listId) {
         this.selectedListId = params.listId;
-        this.taskService.getTasks(params.listId).subscribe((response) => {
+        this.taskService.getTasks(params.listId).subscribe((response: any) => {
           this.tasks = response.tasks;
         });
       } else {
         this.tasks = undefined;
       }
     });
-
-    this.taskService.getLists().subscribe((response) => {
-      this.lists = response.lists;
-    });
+    
   }
 
   onTaskClick(task: Task) {
@@ -49,8 +54,7 @@ export class TaskViewComponent implements OnInit {
 
   onDeleteListClick() {
     this.taskService.deleteList(this.selectedListId).subscribe((res: any) => {
-      this.router.navigate(["/lists"]);
-      console.log(res);
+      this.router.navigate(['/lists']);
     });
   }
 

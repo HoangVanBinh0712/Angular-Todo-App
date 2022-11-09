@@ -9,7 +9,10 @@ import { TaskService } from 'src/app/task.service';
 })
 export class EditListComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private taskService: TaskService, private router: Router) { }
+  
+  constructor(private route: ActivatedRoute, private taskService: TaskService, private router: Router) { 
+
+  }
 
   listId: string;
 
@@ -24,7 +27,7 @@ export class EditListComponent implements OnInit {
   }
 
   updateList(title: string) {
-    this.taskService.updateList(this.listId, title).subscribe(() => {
+    this.taskService.updateListMinh(this.listId, title).subscribe(() => {
       this.router.navigate(['/lists', this.listId]);
     })
   }
