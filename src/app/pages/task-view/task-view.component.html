@@ -1,3 +1,4 @@
+<p-toast position="top-right"></p-toast>
 <div class="centered-content">
     <div class="task-manager-container">
         <div class="sidebar has-background-white border-radis-top-bottom-left">
@@ -68,26 +69,30 @@
 
         <!-- Task Options Elements -->
 
-        <div class="sidebar-right border-radis-top-bottom-right background-black">
+        <div class="sidebar-right border-radis-top-bottom-right background-black" *ngIf="selectedTask">
             <!-- Name of task -->
             <!-- List steps of task -->
             <!-- Button add step-->
             <div class="links">
                 <ul>
                     <li>
-                        <p>{{ selectedTask.taskName }}</p>
-                        <div class="task" *ngFor="let step of steps" [ngClass]="{ completed: step.isCompleted }">
-                          <div class="task-text">
-                              <p>{{ step.stepName }}</p>
-                          </div>
-                          <div class="task-buttons">
-                              <button class="button is-danger" (click)="onDeleteTaskClick(task._id)" style="margin-left: 10px">
-                                  <div class="icon">
-                                      <i class="fas fa-trash"></i>
-                                  </div>
-                              </button>
-                          </div>
-                      </div>
+                        <div class="step-text-header">
+                            {{ selectedTask.taskName }}
+                        </div>
+                        <div class="step" *ngFor="let step of steps" [ngClass]="{ completed: step.isCompleted }">
+                            <div class="step-text">
+                                <input type="text" [value]="step.stepName" (input)="step.stepName = $event.target.value" />
+                            </div>
+                            <div class="step-buttons">
+                                <i class="pi pi-check step-icon" (click)="onUpdateStepClick(step._id)"></i>
+                                <i class="pi pi-trash step-icon" (click)="onDeleteStepClick(step._id)"></i>
+                            </div>
+                        </div>
+
+                        <a>
+                            <input type="text" placeholder="Add step" [value]="addStep" (input)="addStep = $event.target.value" />
+                            <button (click)="onAddstepClick()">Add</button></a
+                        >
                     </li>
                     <li>
                         <a> <i class="pi pi-sun"></i> Add to My Day</a>
@@ -103,3 +108,4 @@
         </div>
     </div>
 </div>
+<p-confirmDialog [style]="{ width: '50vw' }" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

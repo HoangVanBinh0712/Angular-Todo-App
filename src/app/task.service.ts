@@ -1,56 +1,70 @@
-import { Injectable } from "@angular/core";
-import { WebRequestService } from "./web-request.service";
-import { Task } from "./models/task.model";
-import { Observable } from "rxjs";
-import { List } from "./models/list.model";
+import { Injectable } from '@angular/core'
+import { WebRequestService } from './web-request.service'
+import { Task } from './models/task.model'
+import { Observable } from 'rxjs'
+import { List } from './models/list.model'
 
 @Injectable({
-  providedIn: "root",
+    providedIn: 'root',
 })
 export class TaskService {
-  constructor(private webReqService: WebRequestService) {}
+    constructor(private webReqService: WebRequestService) {}
 
-  getLists(){
-    return this.webReqService.get("lists/get_all");
-  }
+    getLists() {
+        return this.webReqService.get('lists/get_all')
+    }
 
-  createList(title: string) {
-    // We want to send a web request to create a list
-    return this.webReqService.post("lists/create", { listName: title });
-  }
+    createList(title: string) {
+        // We want to send a web request to create a list
+        return this.webReqService.post('lists/create', { listName: title })
+    }
 
-  updateList(id: string, title: string) {
-    // We want to send a web request to update a list
-    return this.webReqService.patch(`lists/${id}`, { title });
-  }
+    updateList(id: string, title: string) {
+        // We want to send a web request to update a list
+        return this.webReqService.patch(`lists/${id}`, { title })
+    }
 
-  updateTask(listId: string, taskId: string, title: string) {
-    // We want to send a web request to update a list
-    return this.webReqService.patch(`lists/${listId}/tasks/${taskId}`, {
-      title,
-    });
-  }
+    updateTask(listId: string, taskId: string, title: string) {
+        // We want to send a web request to update a list
+        return this.webReqService.patch(`lists/${listId}/tasks/${taskId}`, {
+            title,
+        })
+    }
 
-  deleteTask(listId: string, taskId: string) {
-    return this.webReqService.delete(`lists/${listId}/tasks/${taskId}`);
-  }
+    deleteTask(listId: string, taskId: string) {
+        return this.webReqService.delete(`lists/${listId}/tasks/${taskId}`)
+    }
 
-  deleteList(id: string) {
-    return this.webReqService.delete(`lists/${id}`);
-  }
+    deleteList(id: string) {
+        return this.webReqService.delete(`lists/${id}`)
+    }
 
-  getTasks(listId: string) {
-    return this.webReqService.get(`tasks/get_all/${listId}`);
-  }
+    getTasks(listId: string) {
+        return this.webReqService.get(`tasks/get_all/${listId}`)
+    }
 
-  createTask(title: string, listId: string) {
-    // We want to send a web request to create a task
-    return this.webReqService.post(`lists/${listId}/tasks`, { title });
-  }
+    createTask(title: string, listId: string) {
+        // We want to send a web request to create a task
+        return this.webReqService.post(`lists/${listId}/tasks`, { title })
+    }
 
-  complete(task: Task) {
-    return this.webReqService.patch(`lists/${task.list}/tasks/${task._id}`, {
-      completed: !task.isCompleted,
-    });
-  }
+    complete(task: Task) {
+        return this.webReqService.patch(`lists/${task.list}/tasks/${task._id}`, {
+            completed: !task.isCompleted,
+        })
+    }
+
+    getSteps(taskId: string) {
+        return this.webReqService.get(`steps/${taskId}`)
+    }
+
+    createStep(taskId: string, stepName: string, priority: Number) {
+        return this.webReqService.post(`steps`, { taskId: taskId, stepName: stepName, priority: priority })
+    }
+    deleteStep(id: string) {
+        return this.webReqService.delete(`steps/${id}`)
+    }
+    updateStep(stepId: string, stepName: string, priority: Number) {
+        return this.webReqService.put(`steps`, { stepId: stepId, stepName: stepName, priority: priority })
+    }
 }
