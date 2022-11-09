@@ -9,7 +9,7 @@ export class WebRequestService {
   readonly ROOT_URL;
 
   constructor(private http: HttpClient) {
-    this.ROOT_URL = 'http://localhost:3000';
+    this.ROOT_URL = 'http://localhost:3000/api/v1';
   }
 
   get(uri: string) {
@@ -29,7 +29,7 @@ export class WebRequestService {
   }
 
   login(email: string, password: string) {
-    return this.http.post(`${this.ROOT_URL}/users/login`, {
+    return this.http.post(`${this.ROOT_URL}/accounts/login`, {
       email,
       password
     }, {
@@ -38,7 +38,7 @@ export class WebRequestService {
   }
 
   signup(email: string, password: string) {
-    return this.http.post(`${this.ROOT_URL}/users`, {
+    return this.http.post(`${this.ROOT_URL}/accounts/create`, {
       email,
       password
     }, {
