@@ -3,8 +3,6 @@ import { TaskService } from 'src/app/task.service'
 import { ActivatedRoute, Params, Router } from '@angular/router'
 import { Task } from 'src/app/models/task.model'
 import { List } from 'src/app/models/list.model'
-import { ListResponse } from 'src/app/models/response/listResponse.model'
-import { TaskResponse } from 'src/app/models/response/taskResponse.model'
 import { Step } from 'src/app/models/step.model'
 
 @Component({
@@ -26,7 +24,7 @@ export class TaskViewComponent implements OnInit {
         this.route.params.subscribe((params: Params) => {
             if (params.listId) {
                 this.selectedListId = params.listId
-                this.taskService.getTasks(params.listId).subscribe((response: TaskResponse) => {
+                this.taskService.getTasks(params.listId).subscribe((response: any) => {
                     this.tasks = response.tasks
                 })
             } else {
@@ -34,7 +32,7 @@ export class TaskViewComponent implements OnInit {
             }
         })
 
-        this.taskService.getLists().subscribe((response: ListResponse) => {
+        this.taskService.getLists().subscribe((response: any) => {
             this.lists = response.lists
         })
 
