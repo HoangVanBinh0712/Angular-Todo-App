@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { WebRequestService } from './web-request.service';
+import { WebRequestService } from '../request/web-request.service';
 import { Router } from '@angular/router';
 import { shareReplay, tap } from 'rxjs/operators';
 

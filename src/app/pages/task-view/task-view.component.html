@@ -74,18 +74,25 @@
             <!-- List steps of task -->
             <!-- Button add step-->
             <div class="links">
+                <div class="step-text-header">
+                    {{ selectedTask.taskName }}
+                </div>
                 <ul>
                     <li>
-                        <div class="step-text-header">
-                            {{ selectedTask.taskName }}
-                        </div>
-                        <div class="step" *ngFor="let step of steps" [ngClass]="{ completed: step.isCompleted }">
-                            <div class="step-text">
-                                <input type="text" [value]="step.stepName" (input)="step.stepName = $event.target.value" />
-                            </div>
-                            <div class="step-buttons">
-                                <i class="pi pi-check step-icon" (click)="onUpdateStepClick(step._id)"></i>
-                                <i class="pi pi-trash step-icon" (click)="onDeleteStepClick(step._id)"></i>
+                        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+                            <div class="step" *ngFor="let step of steps" cdkDrag>
+                                <div class="step-text">
+                                    <i
+                                        [ngClass]="{ completed: step.isCompleted }"
+                                        class="pi pi-chevron-circle-down"
+                                        (click)="changeStepStatusClick(step._id)"
+                                    ></i>
+                                    <input type="text" [value]="step.stepName" (input)="step.stepName = $event.target.value" />
+                                </div>
+                                <div class="step-buttons">
+                                    <i class="pi pi-check step-icon" (click)="onUpdateStepClick(step._id)" style="color: #2564cf"></i>
+                                    <i class="pi pi-trash step-icon" (click)="onDeleteStepClick(step._id)"></i>
+                                </div>
                             </div>
                         </div>
 

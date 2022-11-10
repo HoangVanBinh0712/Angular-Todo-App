@@ -9,7 +9,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { NewListComponent } from './pages/new-list/new-list.component'
 import { NewTaskComponent } from './pages/new-task/new-task.component'
 import { LoginPageComponent } from './pages/login-page/login-page.component'
-import { WebReqInterceptor } from './web-req.interceptor'
+import { WebReqInterceptor } from './service/request/web-req.interceptor'
 import { SignupPageComponent } from './pages/signup-page/signup-page.component'
 import { EditListComponent } from './pages/edit-list/edit-list.component'
 import { EditTaskComponent } from './pages/edit-task/edit-task.component'
@@ -19,6 +19,7 @@ import { MessageService } from 'primeng/api'
 import { ConfirmDialogModule } from 'primeng/confirmdialog'
 import { ConfirmationService } from 'primeng/api'
 import { ToastModule } from 'primeng/toast'
+import { DragDropModule } from '@angular/cdk/drag-drop';  
 
 @NgModule({
     declarations: [
@@ -31,7 +32,7 @@ import { ToastModule } from 'primeng/toast'
         EditListComponent,
         EditTaskComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule, HttpClientModule, MenuModule, BrowserAnimationsModule, ConfirmDialogModule, ToastModule],
+    imports: [BrowserModule, AppRoutingModule, HttpClientModule, MenuModule, BrowserAnimationsModule, ConfirmDialogModule, ToastModule, DragDropModule],
     providers: [{ provide: HTTP_INTERCEPTORS, useClass: WebReqInterceptor, multi: true }, ConfirmationService, MessageService],
     bootstrap: [AppComponent],
 })

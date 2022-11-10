@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core'
-import { TaskService } from 'src/app/task.service'
+import { TaskService } from 'src/app/service/task/task.service'
+import { StepService } from 'src/app/service/step/step.service'
 import { ActivatedRoute, Params, Router } from '@angular/router'
 import { Task } from 'src/app/models/task.model'
 import { List } from 'src/app/models/list.model'
 import { Step } from 'src/app/models/step.model'
 import { MessageService, ConfirmationService } from 'primeng/api'
-import { timer } from 'rxjs'
+import { CdkDragDrop } from '@angular/cdk/drag-drop'
 
 @Component({
     selector: 'app-task-view',
@@ -13,17 +14,18 @@ import { timer } from 'rxjs'
     styleUrls: ['./task-view.component.scss'],
 })
 export class TaskViewComponent implements OnInit {
-    lists: List[]
-    tasks: Task[]
-    steps: Step[]
-
+    lists: List[] = []
+    tasks: Task[] = []
+    // Init variables for steps
+    steps: Step[] = []
     addStep: string = ''
 
-    selectedListId: string
+    selectedListId: string = ''
     selectedTask: Task = null
 
     constructor(
         private taskService: TaskService,
+        private stepService: StepService,
         private route: ActivatedRoute,
         private router: Router,
         private messageService: MessageService,
@@ -46,34 +48,6 @@ export class TaskViewComponent implements OnInit {
         this.taskService.getLists().subscribe((response: any) => {
             this.lists = response.lists
         })
-
-        this.steps = [
-            {
-                stepName: 'Step 1',
-                isCompleted: true,
-            },
-            {
-                stepName: 'Step 2',
-                isCompleted: false,
-            },
-            {
-                stepName: 'Step 3',
-                isCompleted: false,
-            },
-        ]
-    }
-
-    onTaskClick(task: Task) {
-        // we want to set the task to completed
-        // this.taskService.complete(task).subscribe(() => {
-        //     // the task has been set to completed successfully
-        //     console.log('Completed successully!')
-        //     task.isCompleted = !task.isCompleted
-        // })
-        this.taskService.getSteps(task._id).subscribe((res: any) => {
-            this.steps = res.lstStep
-        })
-        this.selectedTask = task
     }
 
     onDeleteListClick() {
@@ -90,16 +64,51 @@ export class TaskViewComponent implements OnInit {
         })
     }
 
+    //Step function from here
+    //Drop to change position - priority of step
+    drop(event: CdkDragDrop<Step[]>) {
+        //Swap priority
+        const tpriority = this.steps[event.previousIndex].priority
+        this.steps[event.previousIndex].priority = this.steps[event.currentIndex].priority
+        this.steps[event.currentIndex].priority = tpriority
+
+        //update priority
+        this.stepService
+            .updateStep(
+                this.steps[event.previousIndex]._id,
+                this.steps[event.previousIndex].stepName,
+                this.steps[event.previousIndex].priority
+            )
+            .subscribe((res: any) => {})
+        this.stepService
+            .updateStep(
+                this.steps[event.currentIndex]._id,
+                this.steps[event.currentIndex].stepName,
+                this.steps[event.currentIndex].priority
+            )
+            .subscribe((res: any) => {})
+        //sort
+        this.steps = this.steps.sort((a, b) => {
+            return a.priority - b.priority
+        })
+    }
+    onTaskClick(task: Task) {
+        this.steps = []
+        this.stepService.getSteps(task._id).subscribe((res: any) => {
+            this.steps = res.lstStep
+        })
+        this.selectedTask = task
+    }
+
     onAddstepClick() {
         if (this.addStep.length !== 0) {
-            this.taskService.createStep(this.selectedTask._id, this.addStep, 1).subscribe((res: any) => {
+            this.stepService.createStep(this.selectedTask._id, this.addStep).subscribe((res: any) => {
                 if (res.message) {
-                    console.log('here')
                     this.steps.push(res.step)
                     this.addStep = ''
                     this.messageService.add({
                         severity: 'success',
-                        summary: 'Success:' ,
+                        summary: 'Success:',
                         detail: 'Add step successfully !',
                     })
                 }
@@ -113,14 +122,14 @@ export class TaskViewComponent implements OnInit {
             header: 'Delete step',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.taskService.deleteStep(id).subscribe(
+                this.stepService.deleteStep(id).subscribe(
                     (response) => {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Success',
                             detail: 'Step is deleted successfully!',
                         })
-                        this.taskService.getSteps(this.selectedTask._id).subscribe((res: any) => {
+                        this.stepService.getSteps(this.selectedTask._id).subscribe((res: any) => {
                             this.steps = res.lstStep
                         })
                     },
@@ -141,7 +150,7 @@ export class TaskViewComponent implements OnInit {
 
     onUpdateStepClick(id: string) {
         const step = this.steps.filter((x) => x._id === id)[0]
-        this.taskService.updateStep(step._id, step.stepName, step.priority).subscribe((res: any) => {
+        this.stepService.updateStep(step._id, step.stepName, step.priority).subscribe((res: any) => {
             this.steps = this.steps.map((step) => {
                 if (step._id != res.step._id) return step
                 else return res.step
@@ -153,4 +162,19 @@ export class TaskViewComponent implements OnInit {
             })
         })
     }
+
+    changeStepStatusClick(id: string) {
+        this.stepService.changeStatusStep(id).subscribe((res: any) => {
+            this.steps = this.steps.map((step) => {
+                if (step._id != res.step._id) return step
+                else return res.step
+            })
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Success:',
+                detail: 'Update step successfully !',
+            })
+        })
+    }
+    // Step functions end here
 }

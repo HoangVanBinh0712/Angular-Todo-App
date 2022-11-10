@@ -1,7 +1,7 @@
 export class Step{
     _id?: string;
     stepName? : string;
-    priority?: Number;
+    priority?: number;
     isCompleted?: Boolean;
     task?: string;
 }

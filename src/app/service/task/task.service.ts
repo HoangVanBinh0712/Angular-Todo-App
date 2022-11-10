@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core'
-import { WebRequestService } from './web-request.service'
-import { Task } from './models/task.model'
-import { Observable } from 'rxjs'
-import { List } from './models/list.model'
+import { WebRequestService } from '../request/web-request.service'
+import { Task } from '../../models/task.model'
 
 @Injectable({
     providedIn: 'root',
@@ -52,19 +50,5 @@ export class TaskService {
         return this.webReqService.patch(`lists/${task.list}/tasks/${task._id}`, {
             completed: !task.isCompleted,
         })
-    }
-
-    getSteps(taskId: string) {
-        return this.webReqService.get(`steps/${taskId}`)
-    }
-
-    createStep(taskId: string, stepName: string, priority: Number) {
-        return this.webReqService.post(`steps`, { taskId: taskId, stepName: stepName, priority: priority })
-    }
-    deleteStep(id: string) {
-        return this.webReqService.delete(`steps/${id}`)
-    }
-    updateStep(stepId: string, stepName: string, priority: Number) {
-        return this.webReqService.put(`steps`, { stepId: stepId, stepName: stepName, priority: priority })
     }
 }
