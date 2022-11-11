@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup-page.component.scss']
 })
 export class SignupPageComponent implements OnInit {
-
+  isSignUpFailed = false;
+  errorMessage = '';
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
@@ -19,7 +20,17 @@ export class SignupPageComponent implements OnInit {
     this.authService.signup(email, password).subscribe((res: HttpResponse<any>) => {
       console.log(res);
       this.router.navigate(['/lists']);
-    });
+    }, err => {
+      console.log(err);
+      if(err.error.error.message != null && err.error.error.message.startsWith("Account validation failed")){
+        this.errorMessage = "Please type email";
+      }
+      if(err.error.error.keyValue != null){
+        this.errorMessage = "This email already exists";
+      }
+      this.isSignUpFailed = true;
+      console.log(this.errorMessage)
+    } );
   }
 
 }

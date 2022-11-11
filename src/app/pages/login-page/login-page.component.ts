@@ -11,7 +11,8 @@ import { Router } from '@angular/router';
 export class LoginPageComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) { }
-
+  isLoginFailed = false;
+  errorMessage = '';
   ngOnInit() {
   }
 
@@ -22,8 +23,12 @@ export class LoginPageComponent implements OnInit {
         console.log(res);
         this.router.navigate(['/lists']);
       }
+      console.log('123');
       console.log(res);
-      
+    }, 
+    err => {
+      this.errorMessage = err.error;
+      this.isLoginFailed = true;
     });
   }
 

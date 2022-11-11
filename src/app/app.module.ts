@@ -25,7 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     LoginPageComponent,
     SignupPageComponent,
     EditListComponent,
-    EditTaskComponent,
+    EditTaskComponent
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, MenuModule, BrowserAnimationsModule],
   providers: [
