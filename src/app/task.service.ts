@@ -10,22 +10,22 @@ import { List } from "./models/list.model";
 export class TaskService {
   constructor(private webReqService: WebRequestService) {}
 
-  getLists(userId:string){
-    return this.webReqService.get(`list/get_all/${userId}`);
+  getLists(){
+    return this.webReqService.get(`lists/get_all`);
   }
 
   createList(title: string, accountId: string) {
     // We want to send a web request to create a list
-    return this.webReqService.post("list/create", { listName: title,  accountId : accountId});
+    return this.webReqService.post("lists/create", { listName: title,  accountId : accountId});
   }
 
   updateList(id: string, title: string) {
     // We want to send a web request to update a list
-    return this.webReqService.patch(`list/${id}`, { title });
+    return this.webReqService.patch(`lists/${id}`, { title });
   }
 
   updateListMinh(id: string, title: string) {
-    return this.webReqService.put(`list/update`, {id: id, listName: title });
+    return this.webReqService.put(`lists/update`, {id: id, listName: title });
   }
 
   updateTask(listId: string, taskId: string, title: string) {
@@ -40,11 +40,11 @@ export class TaskService {
   }
 
   deleteList(id: string) {
-    return this.webReqService.delete(`list/${id}`);
+    return this.webReqService.delete(`lists/${id}`);
   }
 
   getTasks(listId: string) {
-    return this.webReqService.get(`task/get_all/${listId}`);
+    return this.webReqService.get(`tasks/get_all/${listId}`);
   }
 
   createTask(title: string, listId: string) {

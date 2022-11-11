@@ -28,17 +28,17 @@ export class TaskViewComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.taskService.getLists(this.accountId).subscribe((response: any) => {
+      this.taskService.getLists().subscribe((response: any) => {
         this.lists = response.lists;
       });
-      if (params.listId) {
-        this.selectedListId = params.listId;
-        this.taskService.getTasks(params.listId).subscribe((response: any) => {
-          this.tasks = response.tasks;
-        });
-      } else {
-        this.tasks = undefined;
-      }
+      // if (params.listId) {
+      //   this.selectedListId = params.listId;
+      //   this.taskService.getTasks(params.listId).subscribe((response: any) => {
+      //     this.tasks = response.tasks;
+      //   });
+      // } else {
+      //   this.tasks = undefined;
+      // }
     });
     
   }
