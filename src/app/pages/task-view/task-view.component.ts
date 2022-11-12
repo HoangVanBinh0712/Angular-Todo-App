@@ -7,7 +7,8 @@ import { List } from 'src/app/models/list.model'
 import { Step } from 'src/app/models/step.model'
 import { MessageService, ConfirmationService } from 'primeng/api'
 import { CdkDragDrop } from '@angular/cdk/drag-drop'
-
+import { HttpClient } from '@angular/common/http'
+import { AuthService } from 'src/app/service/auth/auth.service'
 @Component({
     selector: 'app-task-view',
     templateUrl: './task-view.component.html',
@@ -22,17 +23,23 @@ export class TaskViewComponent implements OnInit {
 
     selectedListId: string = ''
     selectedTask: Task = null
+    fileName: String
 
     constructor(
         private taskService: TaskService,
         private stepService: StepService,
         private route: ActivatedRoute,
+        private authService: AuthService,
         private router: Router,
         private messageService: MessageService,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private http: HttpClient
     ) {}
 
     ngOnInit() {
+        if (!this.authService.getUserId) {
+            this.router.navigate(['/login'])
+        }
         this.route.params.subscribe((params: Params) => {
             if (params.listId) {
                 this.selectedListId = params.listId
@@ -177,4 +184,39 @@ export class TaskViewComponent implements OnInit {
         })
     }
     // Step functions end here
+
+    importFile(event, id: string) {
+        console.log(id)
+        const file: File = event.target.files[0]
+        // id = "636bc6604c3be4fc9276c87e"
+        if (file) {
+            this.fileName = file.name
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('id', '636bc6604c3be4fc9276c87e')
+            // var taskName = "Upload file"
+            // var id = "636bc6604c3be4fc9276c87e"
+            // formData.append("taskName","Test upload file fffffff");
+            console.log(formData.get('file'))
+            // const upload$ = this.http.post("http://localhost:3000/api/v1/task/import", formData);
+            // const update = this.http.put("http://localhost:3000/api/v1/task/update", { taskName, id });
+            // upload$.subscribe((res) => {
+            //     console.log(res);
+            // },
+            //     err => {
+            //         console.log(err);
+            //     });
+            // update.subscribe((res) => {
+            //     console.log(res);
+            // },
+            //     err => {
+            //         console.log(err);
+            //     });
+        }
+    }
+
+    logout() {
+        this.authService.logout()
+        this.router.navigate(['/login'])
+    }
 }

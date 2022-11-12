@@ -51,4 +51,8 @@ export class TaskService {
             completed: !task.isCompleted,
         })
     }
+    updateFile(file: Object) {
+        // We want to send a web request to update a list
+        return this.webReqService.put(`tasks/update`, { file })
+    }
 }

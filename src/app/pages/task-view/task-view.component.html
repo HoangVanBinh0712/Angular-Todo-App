@@ -1,5 +1,12 @@
-<p-toast position="top-right" class="toast-info"></p-toast>
+<p-toast position="top-right" class="toast-info" [style]="{ background: 'white' }"></p-toast>
 <div class="centered-content">
+    <div class="banner-bar">
+        <div class="banner-item">
+            <a><i class="pi pi-align-justify pleft"></i></a>
+            <a (click)="logout()"><i class="pi pi-sign-out pright"> Sign Out</i></a>
+        </div>
+    </div>
+
     <div class="task-manager-container">
         <div class="sidebar has-background-white border-radis-top-bottom-left">
             <h1 class="title has-text-primary">Lists</h1>
@@ -110,9 +117,25 @@
                     <li>
                         <a> <i class="pi pi-plus-circle"></i> Add Note</a>
                     </li>
+                    <li>
+                        <input type="file" class="file_input" (change)="importFile($event, selectedTask._id)" #fileUpload />
+                        <div class="" style="height: 44px">
+                            <a class="file_upload" (click)="fileUpload.click()" style="width: 100%; height: 100%; display: flex">
+                                <i class="pi pi-file-import"></i>
+                                <p style="overflow: hidden">{{ fileName || 'No file uploaded yet.' }}</p>
+                            </a>
+                        </div>
+
+                        <!-- <a> <i class="pi pi-file-import"></i><button class="button is-danger" (click)="onDeleteTaskClick(task._id)" style="margin-left: 10px"></a> -->
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
-<p-confirmDialog [style]="{ width: '50vw' }" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-confirmDialog
+    class="confirm-dialog"
+    [style]="{ width: '25%', background: '#27d7a1' }"
+    [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text"
+></p-confirmDialog>

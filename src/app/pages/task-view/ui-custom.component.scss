@@ -1,0 +1,19 @@
+.confirm-dialog {
+    border-radius: 3px 3px 3px 3px;
+    background: white;
+    .ui-button {
+        background: white;
+        border: none;
+        border-radius: 2px;
+    }
+    .ui-dialog-titlebar{
+        font-weight: bolder;
+        font-size: 1.3rem;
+    }
+    .ui-dialog-content{
+        font-size: 1rem;
+    }
+    .ui-dialog-titlebar-close{
+        color: black
+    }
+}

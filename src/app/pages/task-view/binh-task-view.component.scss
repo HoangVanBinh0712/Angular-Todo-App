@@ -99,8 +99,40 @@
 .step-icon {
     margin-right: 5px;
 }
-.toast-info{
-    background: none;
-    background-color: none;
-    color: black;
+.banner-bar {
+    background: #2564cf;
+    width: 100%;
+    height: 6%;
+    display: flex;
+    .banner-item {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        a {
+            height: 100%;
+            width: 50%;
+            margin: 0 42px 0 42px;
+            i {
+                align-items: center;
+                display: flex;
+                color: white;
+                font-size: 1rem;
+                &::before{
+                    margin-right: 10px;
+                    margin-top: 3px;
+
+                }
+            }
+            .pleft {
+                //margin-left: auto;
+                justify-content: left;
+                height: 100%;
+            }
+
+            .pright {
+                justify-content: right;
+                height: 100%;
+            }
+        }
+    }
 }
