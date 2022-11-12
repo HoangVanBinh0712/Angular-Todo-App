@@ -28,6 +28,11 @@ export class WebRequestService {
     return this.http.delete(`${this.ROOT_URL}/${uri}`);
   }
 
+  // put(uri: string, payload: FormData) {
+  //   return this.http.put(`${this.ROOT_URL}/${uri}`,payload);
+  // }
+
+
   login(email: string, password: string) {
     return this.http.post(`${this.ROOT_URL}/account/login`, {
       email,

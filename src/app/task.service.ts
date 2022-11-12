@@ -1,14 +1,17 @@
 import { Injectable } from "@angular/core";
 import { WebRequestService } from "./web-request.service";
 import { Task } from "./models/task.model";
-import { Observable } from "rxjs";
-import { List } from "./models/list.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class TaskService {
-  constructor(private webReqService: WebRequestService) {}
+  
+  readonly ROOT_URL;
+
+  constructor(private webReqService: WebRequestService) {
+    this.ROOT_URL = 'http://localhost:3000/api/v1';
+  }
 
   getLists(){
     return this.webReqService.get("lists/get_all");
@@ -53,4 +56,10 @@ export class TaskService {
       completed: !task.isCompleted,
     });
   }
+
+  // updateFile( file: Object) {
+  //   // We want to send a web request to update a list
+  //   return this.webReqService.put(`task/update`,{file});
+  // }
+
 }

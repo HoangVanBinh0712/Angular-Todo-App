@@ -4,6 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router'
 import { Task } from 'src/app/models/task.model'
 import { List } from 'src/app/models/list.model'
 import { Step } from 'src/app/models/step.model'
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-task-view',
@@ -17,8 +18,8 @@ export class TaskViewComponent implements OnInit {
 
     selectedListId: string
     selectedTask: Task
-
-    constructor(private taskService: TaskService, private route: ActivatedRoute, private router: Router) {}
+    fileName: String
+    constructor(private taskService: TaskService, private route: ActivatedRoute, private router: Router, private http: HttpClient) { }
 
     ngOnInit() {
         this.route.params.subscribe((params: Params) => {
@@ -75,4 +76,35 @@ export class TaskViewComponent implements OnInit {
             console.log(res)
         })
     }
+
+    importFile(event, id: string) {
+        const file: File = event.target.files[0];
+        // id = "636bc6604c3be4fc9276c87e"
+        if (file) {
+            this.fileName = file.name;
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("id","636bc6604c3be4fc9276c87e");
+            // var taskName = "Upload file"
+            // var id = "636bc6604c3be4fc9276c87e"
+            // formData.append("taskName","Test upload file fffffff");
+            console.log(formData.get("file"));
+            // const upload$ = this.http.post("http://localhost:3000/api/v1/task/import", formData);
+            // const update = this.http.put("http://localhost:3000/api/v1/task/update", { taskName, id });
+            // upload$.subscribe((res) => {
+            //     console.log(res);
+            // },
+            //     err => {
+            //         console.log(err);
+            //     });
+            // update.subscribe((res) => {
+            //     console.log(res);
+            // },
+            //     err => {
+            //         console.log(err);
+            //     });
+
+        }
+    }
+
 }

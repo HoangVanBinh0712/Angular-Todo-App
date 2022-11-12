@@ -75,19 +75,19 @@
             <div class="links">
                 <ul>
                     <li>
-                        <p>{{ selectedTask.taskName }}</p>
+                        <!-- <p>{{ selectedTask.taskName }}</p> -->
                         <div class="task" *ngFor="let step of steps" [ngClass]="{ completed: step.isCompleted }">
-                          <div class="task-text">
-                              <p>{{ step.stepName }}</p>
-                          </div>
-                          <div class="task-buttons">
-                              <button class="button is-danger" (click)="onDeleteTaskClick(task._id)" style="margin-left: 10px">
-                                  <div class="icon">
-                                      <i class="fas fa-trash"></i>
-                                  </div>
-                              </button>
-                          </div>
-                      </div>
+                            <div class="task-text">
+                                <p>{{ step.stepName }}</p>
+                            </div>
+                            <div class="task-buttons">
+                                <button class="button is-danger" (click)="onDeleteTaskClick(task._id)" style="margin-left: 10px">
+                                    <div class="icon">
+                                        <i class="fas fa-trash"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
                     </li>
                     <li>
                         <a> <i class="pi pi-sun"></i> Add to My Day</a>
@@ -97,6 +97,18 @@
                     </li>
                     <li>
                         <a> <i class="pi pi-plus-circle"></i> Add Note</a>
+                    </li>
+                    <li>
+                        <input type="file" class="file_input" (change)="importFile($event,1)" #fileUpload/>
+                        <div class="" style="height: 44px;">
+
+                            <a class="file_upload" (click)="fileUpload.click()" style="width: 100%; height: 100%; display: flex;">
+                                <i class="pi pi-file-import"></i>
+                                <p style="overflow: hidden;">{{ fileName || 'No file uploaded yet.' }}</p>
+                        </a>
+                        </div>
+
+                        <!-- <a> <i class="pi pi-file-import"></i><button class="button is-danger" (click)="onDeleteTaskClick(task._id)" style="margin-left: 10px"></a> -->
                     </li>
                 </ul>
             </div>
