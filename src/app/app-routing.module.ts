@@ -9,7 +9,7 @@ import { EditListComponent } from "./pages/edit-list/edit-list.component";
 import { EditTaskComponent } from "./pages/edit-task/edit-task.component";
 
 const routes: Routes = [
-  { path: "", redirectTo: "/lists", pathMatch: "full" },
+  { path: "", redirectTo: "/login", pathMatch: "full" },
   { path: "new-list", component: NewListComponent },
   { path: "edit-list/:listId", component: EditListComponent },
   { path: "login", component: LoginPageComponent },

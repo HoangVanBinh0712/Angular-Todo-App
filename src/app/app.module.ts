@@ -19,7 +19,7 @@ import { MessageService } from 'primeng/api'
 import { ConfirmDialogModule } from 'primeng/confirmdialog'
 import { ConfirmationService } from 'primeng/api'
 import { ToastModule } from 'primeng/toast'
-import { DragDropModule } from '@angular/cdk/drag-drop';  
+import { DragDropModule } from '@angular/cdk/drag-drop'
 
 @NgModule({
     declarations: [
@@ -32,7 +32,16 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
         EditListComponent,
         EditTaskComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule, HttpClientModule, MenuModule, BrowserAnimationsModule, ConfirmDialogModule, ToastModule, DragDropModule],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        MenuModule,
+        BrowserAnimationsModule,
+        ConfirmDialogModule,
+        ToastModule,
+        DragDropModule,
+    ],
     providers: [{ provide: HTTP_INTERCEPTORS, useClass: WebReqInterceptor, multi: true }, ConfirmationService, MessageService],
     bootstrap: [AppComponent],
 })

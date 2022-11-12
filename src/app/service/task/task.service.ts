@@ -19,12 +19,12 @@ export class TaskService {
 
     updateList(id: string, title: string) {
         // We want to send a web request to update a list
-        return this.webReqService.patch(`lists/${id}`, { title })
+        return this.webReqService.put(`lists/update`, { id: id, listName: title })
     }
 
     updateTask(listId: string, taskId: string, title: string) {
         // We want to send a web request to update a list
-        return this.webReqService.patch(`lists/${listId}/tasks/${taskId}`, {
+        return this.webReqService.put(`lists/${listId}/tasks/${taskId}`, {
             title,
         })
     }
@@ -47,7 +47,7 @@ export class TaskService {
     }
 
     complete(task: Task) {
-        return this.webReqService.patch(`lists/${task.list}/tasks/${task._id}`, {
+        return this.webReqService.put(`lists/${task.list}/tasks/${task._id}`, {
             completed: !task.isCompleted,
         })
     }

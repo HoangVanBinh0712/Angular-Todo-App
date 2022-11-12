@@ -11,7 +11,8 @@ import { Router } from '@angular/router';
 export class LoginPageComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) { }
-
+  isLoginFailed = false;
+  errorMessage = '';
   ngOnInit() {
   }
 
@@ -19,10 +20,15 @@ export class LoginPageComponent implements OnInit {
     this.authService.login(email, password).subscribe((res: HttpResponse<any>) => {
       if (res.status === 200) {
         // we have logged in successfully
+        console.log(res);
         this.router.navigate(['/lists']);
       }
+      console.log('123');
       console.log(res);
-      
+    }, 
+    err => {
+      this.errorMessage = err.error;
+      this.isLoginFailed = true;
     });
   }
 
