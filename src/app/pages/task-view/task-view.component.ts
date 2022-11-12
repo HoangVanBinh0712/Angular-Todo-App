@@ -7,6 +7,7 @@ import { List } from 'src/app/models/list.model'
 import { Step } from 'src/app/models/step.model'
 import { MessageService, ConfirmationService } from 'primeng/api'
 import { CdkDragDrop } from '@angular/cdk/drag-drop'
+import { AuthService } from 'src/app/service/auth/auth.service'
 
 @Component({
     selector: 'app-task-view',
@@ -14,7 +15,9 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop'
     styleUrls: ['./task-view.component.scss'],
 })
 export class TaskViewComponent implements OnInit {
+    username:string
     lists: List[] = []
+    addList: string = ''
     tasks: Task[] = []
     // Init variables for steps
     steps: Step[] = []
@@ -24,13 +27,14 @@ export class TaskViewComponent implements OnInit {
     selectedTask: Task = null
 
     constructor(
+        private authService: AuthService,
         private taskService: TaskService,
         private stepService: StepService,
         private route: ActivatedRoute,
         private router: Router,
         private messageService: MessageService,
         private confirmationService: ConfirmationService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.route.params.subscribe((params: Params) => {
@@ -49,12 +53,60 @@ export class TaskViewComponent implements OnInit {
             this.lists = response.lists
         })
     }
-
-    onDeleteListClick() {
-        this.taskService.deleteList(this.selectedListId).subscribe((res: any) => {
-            this.router.navigate(['/lists'])
-            console.log(res)
+    onClear() {
+        this.router.navigate(['/lists']);
+    }
+    onAddListClick() {
+        this.taskService.createList(this.addList).subscribe((res: any) => {
+            if (res._id) {
+                if (this.selectedListId)
+                    this.router.navigate(['/lists'])
+                else {
+                    this.router.navigate(['/lists', res._id])
+                }
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'success',
+                    detail: 'Create list success !',
+                })
+                console.log(res)
+            } else {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'error',
+                    detail: 'Create list failed !',
+                })
+            }
         })
+    }
+    onUpdateListClick(title: string) {
+        if (this.selectedListId) {
+            this.taskService.updateList(this.selectedListId, title).subscribe(() => {
+                this.router.navigate(['/lists']);
+            })
+        } else {
+            this.messageService.add({
+                severity: 'warning',
+                summary: 'warning',
+                detail: 'Please select list !',
+            })
+        }
+    }
+
+    onDeleteListClick(selectedId: string) {
+        if (this.selectedListId) {
+            this.taskService.deleteList(selectedId).subscribe((res: any) => {
+                this.router.navigate(['/lists'])
+                console.log(res)
+            })
+        }
+        else {
+            this.messageService.add({
+                severity: 'warning',
+                summary: 'warning',
+                detail: 'Please select list !',
+            })
+        }
     }
 
     onDeleteTaskClick(id: string) {
@@ -79,14 +131,14 @@ export class TaskViewComponent implements OnInit {
                 this.steps[event.previousIndex].stepName,
                 this.steps[event.previousIndex].priority
             )
-            .subscribe((res: any) => {})
+            .subscribe((res: any) => { })
         this.stepService
             .updateStep(
                 this.steps[event.currentIndex]._id,
                 this.steps[event.currentIndex].stepName,
                 this.steps[event.currentIndex].priority
             )
-            .subscribe((res: any) => {})
+            .subscribe((res: any) => { })
         //sort
         this.steps = this.steps.sort((a, b) => {
             return a.priority - b.priority

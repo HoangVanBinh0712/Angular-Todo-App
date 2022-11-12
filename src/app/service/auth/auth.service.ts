@@ -55,6 +55,7 @@ export class AuthService {
     return localStorage.getItem('user-id');
   }
 
+
   setAccessToken(accessToken: string) {
     localStorage.setItem('x-access-token', accessToken)
   }

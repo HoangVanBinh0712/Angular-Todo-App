@@ -4,33 +4,56 @@
         <div class="sidebar has-background-white border-radis-top-bottom-left">
             <h1 class="title has-text-primary">Lists</h1>
             <div class="list-menu">
-                <a class="list-menu-item" *ngFor="let list of lists" [routerLink]="['/lists', list._id]" routerLinkActive="is-active">
-                    <p>{{ list.listName }}</p>
+                <div class="vertical-menu">
+                    <a *ngFor="let list of lists">
+                        <input
+                            [routerLink]="['/lists', list._id]"
+                            routerLinkActive="is-active"
+                            class="list-menu-item"
+                            style="cursor: pointer"
+                            type="text"
+                            [value]="list.listName"
+                            (input)="list.listName = $event.target.value"
+                        />
+
+                        <div>
+                            <div>
+                                <button
+                                    class="pi pi-check step-icon button is-warning has-text-white"
+                                    (C)="onUpdateListClick(list.listName)"
+                                    style="color: #2564cf; width: 45%"
+                                ></button>
+
+                                <button
+                                    class="pi pi-trash step-icon button is-danger has-text-white"
+                                    (click)="onDeleteListClick(selectedListId)"
+                                    style="color: #fc4343; width: 45%; margin-right: 0px; float: right"
+                                ></button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <a style="margin-top: 20%">
+                    <input
+                        class="list-menu-item"
+                        type="text"
+                        placeholder="List name new"
+                        [value]="addList"
+                        (input)="addList = $event.target.value"
+                    />
+                    <div>
+                        <div>
+                            <button style="width: 100%" class="button is-primary has-text-white" (click)="onAddListClick()">+</button>
+                        </div>
+                    </div>
                 </a>
             </div>
-
-            <button class="button is-primary has-text-white" routerLink="/new-list">+ New List</button>
         </div>
 
         <div class="task-list-container has-background-light">
             <div *ngIf="tasks">
                 <div class="top-bar">
                     <h1 class="title has-text-primary">Tasks</h1>
-                    <div class="dropdown is-hoverable is-right">
-                        <div class="dropdown-trigger">
-                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-                                <span class="icon is-small">
-                                    <i class="fas fa-cog" aria-hidden="true"></i>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                            <div class="dropdown-content">
-                                <a [routerLink]="['/edit-list', selectedListId]" class="dropdown-item"> Edit </a>
-                                <a (click)="onDeleteListClick()" class="dropdown-item has-text-danger"> Delete </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Task Elements -->
