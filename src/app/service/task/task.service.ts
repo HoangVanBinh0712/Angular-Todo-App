@@ -22,17 +22,28 @@ export class TaskService {
         return this.webReqService.put(`lists/update`, { id: id, listName: title })
     }
 
-    updateTask(listId: string, taskId: string, title: string) {
+    updateTask(task: Task) {
         // We want to send a web request to update a list
-        return this.webReqService.put(`lists/${listId}/tasks/${taskId}`, {
-            title,
+        return this.webReqService.put(`tasks/update`, {
+            id: task._id,
+            taskName: task.taskName,
+            note: task.note,
+            isCompleted: task.isCompleted,
+            isImportant: task.isImportant,
+            isToday: task.isToday,
+            deadline: task.deadline,
+            remindAt: task.remindAt,
+            file: task.file,
         })
     }
 
-    deleteTask(listId: string, taskId: string) {
-        return this.webReqService.delete(`lists/${listId}/tasks/${taskId}`)
+    deleteTask(taskId: string) {
+        return this.webReqService.delete(`tasks/${taskId}`)
     }
 
+    updateTaskNote(taskId: string, note: string) {
+        return this.webReqService.put('tasks/update-note', { taskId: taskId, note: note })
+    }
     deleteList(id: string) {
         return this.webReqService.delete(`lists/${id}`)
     }
@@ -40,10 +51,12 @@ export class TaskService {
     getTasks(listId: string) {
         return this.webReqService.get(`tasks/get_all/${listId}`)
     }
-
-    createTask(title: string, listId: string) {
+    getTask(taskId: string) {
+        return this.webReqService.get(`tasks/${taskId}`)
+    }
+    createTask(taskName: string, taskNote: string, deadline: Date, listId: string) {
         // We want to send a web request to create a task
-        return this.webReqService.post(`lists/${listId}/tasks`, { title })
+        return this.webReqService.post(`tasks/create`, { taskName: taskName, taskNote: taskNote, deadline: deadline, listId: listId })
     }
 
     complete(task: Task) {

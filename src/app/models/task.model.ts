@@ -5,7 +5,7 @@ export class Task {
   isCompleted: Boolean;
   isImportant: Boolean;
   isToday: false;
-  deadline: string;
+  deadline: Date;
   remindAt: string;
   file: string;
   list: string;

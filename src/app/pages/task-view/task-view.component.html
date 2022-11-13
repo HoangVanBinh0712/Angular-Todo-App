@@ -69,7 +69,7 @@
                         <p>{{ task.taskName }}</p>
                     </div>
                     <div class="task-buttons">
-                        <button class="button" [routerLink]="['/lists', selectedListId, 'edit-task', task._id]">
+                        <button class="button" [routerLink]="['/lists', selectedListId, 'new-task', task._id]">
                             <div class="icon">
                                 <i class="fas fa-edit"></i>
                             </div>
@@ -138,7 +138,16 @@
                         <a> <i class="pi pi-megaphone"></i> Remind me</a>
                     </li>
                     <li>
-                        <a> <i class="pi pi-plus-circle"></i> Add Note</a>
+                        <a>
+                            <i class="pi pi-plus-circle" (click)="onUpdateNoteClick()" style="color: #2564cf"></i>
+                            <textarea 
+                            class="text-note-task"
+                                type="text"
+                                placeholder="Add step"
+                                [value]="selectedTask.note"
+                                (input)="selectedTask.note = $event.target.value"
+                            ></textarea>
+                        </a>
                     </li>
                     <li>
                         <input type="file" class="file_input" (change)="importFile($event, selectedTask._id)" #fileUpload />

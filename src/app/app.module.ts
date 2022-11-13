@@ -20,6 +20,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog'
 import { ConfirmationService } from 'primeng/api'
 import { ToastModule } from 'primeng/toast'
 import { DragDropModule } from '@angular/cdk/drag-drop'
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {CheckboxModule} from 'primeng/checkbox';
 
 @NgModule({
     declarations: [
@@ -41,6 +43,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop'
         ConfirmDialogModule,
         ToastModule,
         DragDropModule,
+        RadioButtonModule,
+        CheckboxModule
     ],
     providers: [{ provide: HTTP_INTERCEPTORS, useClass: WebReqInterceptor, multi: true }, ConfirmationService, MessageService],
     bootstrap: [AppComponent],
