@@ -1,35 +1,66 @@
+<p-toast position="top-right" class="toast-info" [style]="{ background: 'white' }"></p-toast>
 <div class="centered-content">
+    <div class="banner-bar">
+        <div class="banner-item">
+            <a><i class="pi pi-align-justify pleft"></i></a>
+            <a (click)="logout()"><i class="pi pi-sign-out pright"> Sign Out</i></a>
+        </div>
+    </div>
+
     <div class="task-manager-container">
         <div class="sidebar has-background-white border-radis-top-bottom-left">
             <h1 class="title has-text-primary">Lists</h1>
             <div class="list-menu">
-                <a class="list-menu-item" *ngFor="let list of lists" [routerLink]="['/lists', list._id]" routerLinkActive="is-active">
-                    <p>{{ list.listName }}</p>
+                <div class="vertical-menu">
+                    <a *ngFor="let list of lists">
+                        <input
+                            [routerLink]="['/lists', list._id]"
+                            routerLinkActive="is-active"
+                            class="list-menu-item"
+                            style="cursor: pointer"
+                            type="text"
+                            [value]="list.listName"
+                            (input)="list.listName = $event.target.value"
+                        />
+
+                        <div>
+                            <div>
+                                <button
+                                    class="pi pi-check step-icon button is-warning has-text-white"
+                                    (C)="onUpdateListClick(list.listName)"
+                                    style="color: #2564cf; width: 45%"
+                                ></button>
+
+                                <button
+                                    class="pi pi-trash step-icon button is-danger has-text-white"
+                                    (click)="onDeleteListClick(selectedListId)"
+                                    style="color: #fc4343; width: 45%; margin-right: 0px; float: right"
+                                ></button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <a style="margin-top: 20%">
+                    <input
+                        class="list-menu-item"
+                        type="text"
+                        placeholder="List name new"
+                        [value]="addList"
+                        (input)="addList = $event.target.value"
+                    />
+                    <div>
+                        <div>
+                            <button style="width: 100%" class="button is-primary has-text-white" (click)="onAddListClick()">+</button>
+                        </div>
+                    </div>
                 </a>
             </div>
-
-            <button class="button is-primary has-text-white" routerLink="/new-list">+ New List</button>
         </div>
 
         <div class="task-list-container has-background-light">
             <div *ngIf="tasks">
                 <div class="top-bar">
                     <h1 class="title has-text-primary">Tasks</h1>
-                    <div class="dropdown is-hoverable is-right">
-                        <div class="dropdown-trigger">
-                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-                                <span class="icon is-small">
-                                    <i class="fas fa-cog" aria-hidden="true"></i>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                            <div class="dropdown-content">
-                                <a [routerLink]="['/edit-list', selectedListId]" class="dropdown-item"> Edit </a>
-                                <a (click)="onDeleteListClick()" class="dropdown-item has-text-danger"> Delete </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Task Elements -->
@@ -68,26 +99,37 @@
 
         <!-- Task Options Elements -->
 
-        <div class="sidebar-right border-radis-top-bottom-right background-black">
+        <div class="sidebar-right border-radis-top-bottom-right background-black" *ngIf="selectedTask">
             <!-- Name of task -->
             <!-- List steps of task -->
             <!-- Button add step-->
             <div class="links">
+                <div class="step-text-header">
+                    {{ selectedTask.taskName }}
+                </div>
                 <ul>
                     <li>
-                        <!-- <p>{{ selectedTask.taskName }}</p> -->
-                        <div class="task" *ngFor="let step of steps" [ngClass]="{ completed: step.isCompleted }">
-                            <div class="task-text">
-                                <p>{{ step.stepName }}</p>
-                            </div>
-                            <div class="task-buttons">
-                                <button class="button is-danger" (click)="onDeleteTaskClick(task._id)" style="margin-left: 10px">
-                                    <div class="icon">
-                                        <i class="fas fa-trash"></i>
-                                    </div>
-                                </button>
+                        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+                            <div class="step" *ngFor="let step of steps" cdkDrag>
+                                <div class="step-text">
+                                    <i
+                                        [ngClass]="{ completed: step.isCompleted }"
+                                        class="pi pi-chevron-circle-down"
+                                        (click)="changeStepStatusClick(step._id)"
+                                    ></i>
+                                    <input type="text" [value]="step.stepName" (input)="step.stepName = $event.target.value" />
+                                </div>
+                                <div class="step-buttons">
+                                    <i class="pi pi-check step-icon" (click)="onUpdateStepClick(step._id)" style="color: #2564cf"></i>
+                                    <i class="pi pi-trash step-icon" (click)="onDeleteStepClick(step._id)"></i>
+                                </div>
                             </div>
                         </div>
+
+                        <a>
+                            <input type="text" placeholder="Add step" [value]="addStep" (input)="addStep = $event.target.value" />
+                            <button (click)="onAddstepClick()">Add</button></a
+                        >
                     </li>
                     <li>
                         <a> <i class="pi pi-sun"></i> Add to My Day</a>
@@ -99,13 +141,12 @@
                         <a> <i class="pi pi-plus-circle"></i> Add Note</a>
                     </li>
                     <li>
-                        <input type="file" class="file_input" (change)="importFile($event,1)" #fileUpload/>
-                        <div class="" style="height: 44px;">
-
-                            <a class="file_upload" (click)="fileUpload.click()" style="width: 100%; height: 100%; display: flex;">
+                        <input type="file" class="file_input" (change)="importFile($event, selectedTask._id)" #fileUpload />
+                        <div class="" style="height: 44px">
+                            <a class="file_upload" (click)="fileUpload.click()" style="width: 100%; height: 100%; display: flex">
                                 <i class="pi pi-file-import"></i>
-                                <p style="overflow: hidden;">{{ fileName || 'No file uploaded yet.' }}</p>
-                        </a>
+                                <p style="overflow: hidden">{{ fileName || 'No file uploaded yet.' }}</p>
+                            </a>
                         </div>
 
                         <!-- <a> <i class="pi pi-file-import"></i><button class="button is-danger" (click)="onDeleteTaskClick(task._id)" style="margin-left: 10px"></a> -->
@@ -115,3 +156,9 @@
         </div>
     </div>
 </div>
+<p-confirmDialog
+    class="confirm-dialog"
+    [style]="{ width: '25%', background: '#27d7a1' }"
+    [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-text"
+></p-confirmDialog>
