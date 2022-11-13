@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: "lists", component: TaskViewComponent },
   { path: "lists/:listId", component: TaskViewComponent },
   { path: "lists/:listId/new-task", component: NewTaskComponent },
+  { path: "lists/:listId/new-task/:taskId", component: NewTaskComponent },
   { path: "lists/:listId/edit-task/:taskId", component: EditTaskComponent },
 ];
 

@@ -99,6 +99,18 @@
 .step-icon {
     margin-right: 5px;
 }
+.text-note-task {
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    outline: 0;
+    font-size: 1rem;
+    &:focus {
+        outline: none !important;
+    }
+}
+
 .banner-bar {
     background: #2564cf;
     width: 100%;
@@ -118,10 +130,9 @@
                 display: flex;
                 color: white;
                 font-size: 1rem;
-                &::before{
+                &::before {
                     margin-right: 10px;
                     margin-top: 3px;
-
                 }
             }
             .pleft {

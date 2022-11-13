@@ -114,12 +114,16 @@ export class TaskViewComponent implements OnInit {
     }
 
     onDeleteTaskClick(id: string) {
-        this.taskService.deleteTask(this.selectedListId, id).subscribe((res: any) => {
+        this.taskService.deleteTask(id).subscribe((res: any) => {
             this.tasks = this.tasks.filter((val) => val._id !== id)
-            console.log(res)
         })
     }
 
+    onUpdateNoteClick() {
+        this.taskService.updateTaskNote(this.selectedTask._id, this.selectedTask.note).subscribe((res: any) => {
+            console.log(res)
+        })
+    }
     //Step function from here
     //Drop to change position - priority of step
     drop(event: CdkDragDrop<Step[]>) {

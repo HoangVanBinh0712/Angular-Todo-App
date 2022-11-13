@@ -1,16 +1,39 @@
 <div class="centered-content display-flex">
-  <div class="modal-box">
-    <h1 class="title">
-      Create a new task
-    </h1>
+    <div class="modal-box" *ngIf="!isUpdate">
+        <h1 class="title">Create a new task</h1>
 
-    <input #taskTitleInput class="input has-background-light is-medium" type="text" placeholder="Enter task name...">
-    <br><br>
-    <div class="buttons is-right">
-      <button class="button is-medium" routerLink="/">Cancel</button>
-      <button class="button is-primary has-text-white is-medium" (click)="createTask(taskTitleInput.value)">Create</button>
+        <input #taskNameInput class="input has-background-light is-medium" type="text" placeholder="Enter task name..." />
+        <input #taskNoteInput class="input has-background-light is-medium" type="text" placeholder="Enter task note..." />
+        <input #taskDeadlineInput class="input has-background-light is-medium" type="date" />
+
+        <br /><br />
+        <div class="buttons is-right">
+            <button class="button is-medium" routerLink="/">Cancel</button>
+            <button
+                class="button is-primary has-text-white is-medium"
+                (click)="createTask(taskNameInput.value, taskNoteInput.value, taskDeadlineInput.value)"
+            >
+                Create
+            </button>
+        </div>
     </div>
 
-    
+    <div class="modal-box" *ngIf="isUpdate">
+      <h1 class="title">Update task</h1>
+
+      <input #taskNameInput class="input has-background-light is-medium" type="text" placeholder="Enter task name..." [value]="task.taskName" />
+      <input #taskNoteInput class="input has-background-light is-medium" type="text" placeholder="Enter task note..." [value]="task.note"/>
+      <input #taskDeadlineInput class="input has-background-light is-medium" type="date" [value]="task.deadline"/>
+
+      <br /><br />
+      <div class="buttons is-right">
+          <button class="button is-medium" routerLink="/">Cancel</button>
+          <button
+              class="button is-primary has-text-white is-medium"
+              (click)="updateTask(taskNameInput.value, taskNoteInput.value, taskDeadlineInput.value)"
+          >
+              Update
+          </button>
+      </div>
   </div>
 </div>
